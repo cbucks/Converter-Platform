@@ -1,0 +1,32 @@
+.parent-container {
+  display: grid;
+  grid-template-rows: 10fr;
+}
+
+.header-component {
+  /* grid-row: 1 / 5; */
+  /* height: 500em; */
+}
+
+.converter-component {
+  /* background-color: #FF4136; */
+  width: 90em;
+  height: 20em;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.converter-input {
+  
+}
+
+.converter-select {
+  width: 10em;
+}
+
+.converter-equal {
+  /* font-size: xx-large; */
+  font-size: 10em;
+}
