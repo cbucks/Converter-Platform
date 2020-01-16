@@ -19,14 +19,14 @@
 }
 
 .converter-input {
-  
+  margin: 5em 5em 5em 5em;
 }
 
 .converter-select {
-  width: 10em;
+  /* height: 5em; */
 }
 
 .converter-equal {
   /* font-size: xx-large; */
-  font-size: 10em;
+  font-size: 5em;
 }
