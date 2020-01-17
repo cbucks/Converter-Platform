@@ -1,7 +1,29 @@
-import React from 'react';
-import { Input, Select } from 'semantic-ui-react';
+import React, { Component} from 'react';
 import axios from 'axios';
 import Development from 'Development';
+
+import PropTypes from 'prop-types'
+import {
+  Input,
+  Label,
+  Dropdown,
+  Select,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Header,
+  Icon,
+  Image,
+  List,
+  Menu,
+  Responsive,
+  Segment,
+  Sidebar,
+  Visibility,
+  GridColumn,
+} from 'semantic-ui-react'
+
 
 const fromOptions = [
   { key: 'cbucks', value: 'cbucks', text: 'CBUCKS'},
@@ -79,22 +101,79 @@ class ConverterComponent extends React.Component {
 
   render() {
     return (
+      <Grid columns={3} stackable stretched centered>
+        <Grid.Row stretched> 
+        <Grid.Column only='mobile tablet widescreen computer' mobile={8} table={8} widescreen={10} computer={6}>
+        <Segment>
+        <Input
+          onChange={(e) => {
+          this.onChangeFrom(Number(e.target.value));}}
+          value = {this.state.from}
+
+          fluid stretched
+          labelPosition = 'right'
+          placeholder = 'Amount'
+          size='massive'>
+          <input />
+
+          <Label value={this.state.fromOption}>
+          CBUCKS
+          </Label>
+        </Input>
+        </Segment>
+        </Grid.Column>
+      
+        <b className="converter-equal"> = </b>
+        
+        <Grid.Column only='mobile tablet widescreen computer' mobile={8} table={8} widescreen={10} computer={6}>
+        <Segment>
+        <Input
+          onChange={(e) => {
+          this.onChangeTo(Number(e.target.value));}}
+          value={this.state.to}
+
+          label={<Dropdown defaultValue='USD' options={toOptions} />}
+          labelPosition = 'right'
+          fluid stretched
+          placeholder = 'Amount'
+          size='massive'>
+          <input />
+
+          <Select onChange={(e, e2) => {
+          console.log(e2);
+          this.onChangeToOption(e2.value);
+        }} options={toOptions} value={this.state.toOption} />
+
+        </Input>
+        </Segment>
+        </Grid.Column>
+
+        </Grid.Row>
+      </Grid>
+
+      /*
       <span className="converter-component">
         <Input onChange={(e) => {
           this.onChangeFrom(Number(e.target.value));
         }} size="massive" value={this.state.from} />
+
         <Select onChange={(e, e2) => {
           this.onChangeFromOption(e2.value);
         }} className="converter-select" size="massive" options={fromOptions} value={this.state.fromOption} />
+        
         <b className="converter-equal"> = </b>
+        
         <Input onChange={(e) => {
           this.onChangeTo(Number(e.target.value));
         }} size="massive" value={this.state.to} />
+        
         <Select onChange={(e, e2) => {
           console.log(e2);
           this.onChangeToOption(e2.value);
         }} options={toOptions} value={this.state.toOption} />
       </span>
+      */
+
     );
   }
 }

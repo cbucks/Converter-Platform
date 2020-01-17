@@ -1,15 +1,61 @@
-.parent-container {
-  display: grid;
-  grid-template-rows: 10fr;
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+body {
+  background-image: url(/src/images/gradientbluebg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-left: 10px;
+  font-family: 'Muli', sans-serif;
+}
+
+.ui.grid {
+  margin-left: 2px;
+  margin-right: 2px;
+  height: fit-content;
+}
+
+.ui.segment {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+}
+
+.ui.fixed.menu+.ui.grid {
+  padding-top: 12rem;
+}
+
+.ui.huge.input {
+  background-color: slategray;
+}
+
+.ui.menu {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: transparent;
+}
+
+.ui.menu .item {
+  color: whitesmoke;
+  text-align: center;
+}
+
+.ui.menu:not(.vertical) .left.item {
+  margin-right: unset;
+}
+
+.ui.selection.dropdown {
+  min-width: 3em;
+}
+
+.parent-container, .row{
+  height: 100%;
 }
 
 .header-component {
   /* grid-row: 1 / 5; */
-  /* height: 500em; */
 }
 
 .converter-component {
-  /* background-color: #FF4136; */
   width: 90em;
   height: 20em;
   position: absolute;
@@ -28,5 +74,11 @@
 
 .converter-equal {
   /* font-size: xx-large; */
-  font-size: 5em;
+  font-size: 2em;
+  color: whitesmoke;
+  margin: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
