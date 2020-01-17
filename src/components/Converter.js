@@ -44,9 +44,11 @@ class ConverterComponent extends React.Component {
       to: '',
       toOption: 'usd',
       rate: 0,
+      apiProvider: 'COINGECKO',
     }
     this.onChangeFrom = this.onChangeFrom.bind(this);
     this.onChangeTo = this.onChangeTo.bind(this);
+    this.changeAPIProvider = this.changeAPIProvider.bind(this);
     this.getRate = this.getRate.bind(this);
     this.onChangeFromOption = this.onChangeFromOption.bind(this);
     this.onChangeToOption = this.onChangeToOption.bind(this);
@@ -59,9 +61,14 @@ class ConverterComponent extends React.Component {
     }, Development.interval)
   }
 
+  changeAPIProvider(provider) {
+    this.setState({apiProvider: provider});
+    this.getRate();
+  }
+
   getRate() {
     console.log('to option:', this.state.toOption);
-    axios.get(`${Development.baseUrl}/market/price/${this.state.toOption}`)
+    axios.get(`${Development.baseUrl}/market/cbucks/price/${this.state.toOption}/${this.state.apiProvider}`) 
       .then((result) => {
         console.log(result);
         this.setState({rate: result.data.result.price});
