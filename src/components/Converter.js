@@ -22,17 +22,19 @@ import {
   Sidebar,
   Visibility,
   GridColumn,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
+
+import Delimeter from '../utilities/Delimeter';
 
 
 const fromOptions = [
   { key: 'cbucks', value: 'cbucks', text: 'CBUCKS'},
 ];
 const toOptions = [
+  { key: 'php', value: 'php', text: 'PHP' },
   { key: 'usd', value: 'usd', text: 'USD' },
   { key: 'btc', value: 'btc', text: 'BTC' },
   { key: 'eth', value: 'eth', text: 'ETH' },
-  { key: 'php', value: 'php', text: 'PHP' },
 ]
 
 class ConverterComponent extends React.Component {
@@ -42,7 +44,7 @@ class ConverterComponent extends React.Component {
       from: '',
       fromOption: 'cbucks',
       to: '',
-      toOption: 'usd',
+      toOption: 'php',
       rate: 0,
       apiProvider: 'COINGECKO',
     }
@@ -55,6 +57,10 @@ class ConverterComponent extends React.Component {
   }
 
   componentDidMount() {
+    Number.prototype.countDecimals = function () {
+      if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+      return this.toString().split(".")[1].length || 0; 
+    }
     this.getRate();
     setInterval(() => {
       this.getRate();
@@ -67,10 +73,8 @@ class ConverterComponent extends React.Component {
   }
 
   getRate() {
-    console.log('to option:', this.state.toOption);
     axios.get(`${Development.baseUrl}/market/cbucks/price/${this.state.toOption}/${this.state.apiProvider}`) 
       .then((result) => {
-        console.log(result);
         this.setState({rate: result.data.result.price});
         this.onChangeFrom(this.state.from);
         this.onChangeTo(this.state.to);
@@ -96,13 +100,19 @@ class ConverterComponent extends React.Component {
 
   onChangeFrom(value) {
     this.setState({from: value});
-    const conversion = value * this.state.rate;
+    let conversion = value * this.state.rate;
+    if (conversion.countDecimals() > 4) {
+      conversion = conversion.toFixed(4);
+    }
     this.setState({to: conversion});
   }
 
   onChangeTo(value) {
     this.setState({to: value});
-    const conversion = value / this.state.rate;
+    let conversion = value / this.state.rate;
+    if (conversion.countDecimals() > 4) {
+      conversion = conversion.toFixed(4);
+    }
     this.setState({from: conversion});
   }
 
@@ -114,8 +124,16 @@ class ConverterComponent extends React.Component {
         <Segment>
         <Input
           onChange={(e) => {
-          this.onChangeFrom(Number(e.target.value));}}
-          value = {this.state.from}
+            const parsed = parseFloat(e.target.value.replace(/,/g, ''));
+            if (e.target.value === '') {
+              this.setState({from: 0});
+              this.setState({to: 0});
+            }
+            if(!isNaN(parsed)) {
+              this.onChangeFrom(Number(parsed));
+            }
+          }}
+          value = {Delimeter(this.state.from)}
 
           fluid stretched
           labelPosition = 'right'
@@ -136,8 +154,16 @@ class ConverterComponent extends React.Component {
         <Segment>
         <Input
           onChange={(e) => {
-          this.onChangeTo(Number(e.target.value));}}
-          value={this.state.to}
+            const parsed = parseFloat(e.target.value.replace(/,/g, ''));
+            if (e.target.value === '') {
+              this.setState({from: 0});
+              this.setState({to: 0});
+            }
+            if (!isNaN(parsed)) {
+            this.onChangeTo(Number(parsed));
+            }
+          }}
+          value={Delimeter(this.state.to)}
 
           label={<Dropdown defaultValue='USD' options={toOptions} />}
           labelPosition = 'right'
@@ -147,7 +173,6 @@ class ConverterComponent extends React.Component {
           <input />
 
           <Select onChange={(e, e2) => {
-          console.log(e2);
           this.onChangeToOption(e2.value);
         }} options={toOptions} value={this.state.toOption} />
 
