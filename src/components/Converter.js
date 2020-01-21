@@ -35,6 +35,10 @@ const toOptions = [
   { key: 'usd', value: 'usd', text: 'USD' },
   { key: 'btc', value: 'btc', text: 'BTC' },
   { key: 'eth', value: 'eth', text: 'ETH' },
+  { key: 'thb', value: 'thb', text: 'THB' },
+  { key: 'hkd', value: 'hkd', text: 'HKD' },
+  { key: 'sgd', value: 'sgd', text: 'SGD' },
+  { key: 'jpy', value: 'jpy', text: 'JPY' },
 ]
 
 class ConverterComponent extends React.Component {
@@ -47,6 +51,7 @@ class ConverterComponent extends React.Component {
       toOption: 'php',
       rate: 0,
       apiProvider: 'COINGECKO',
+      isChanging: true,
     }
     this.onChangeFrom = this.onChangeFrom.bind(this);
     this.onChangeTo = this.onChangeTo.bind(this);
@@ -99,12 +104,14 @@ class ConverterComponent extends React.Component {
   }
 
   onChangeFrom(value) {
-    this.setState({from: value});
-    let conversion = value * this.state.rate;
-    if (conversion.countDecimals() > 4) {
-      conversion = conversion.toFixed(4);
+    if (this.state.isChanging) {
+      this.setState({from: value});
+      let conversion = value * this.state.rate;
+      if (conversion.countDecimals() > 4) {
+        conversion = conversion.toFixed(4);
+      }
+      this.setState({to: conversion});
     }
-    this.setState({to: conversion});
   }
 
   onChangeTo(value) {
@@ -160,7 +167,7 @@ class ConverterComponent extends React.Component {
               this.setState({to: 0});
             }
             if (!isNaN(parsed)) {
-            this.onChangeTo(Number(parsed));
+              this.onChangeTo(Number(parsed));
             }
           }}
           value={Delimeter(this.state.to)}
@@ -172,9 +179,15 @@ class ConverterComponent extends React.Component {
           size='massive'>
           <input />
 
-          <Select onChange={(e, e2) => {
-          this.onChangeToOption(e2.value);
-        }} options={toOptions} value={this.state.toOption} />
+          <Select
+            onChange={(e, e2) => {
+              this.setState({isChanging: false});
+              this.onChangeToOption(e2.value);
+              this.setState({isChanging: true});
+            }}
+            options={toOptions}
+            value={this.state.toOption}
+          />
 
         </Input>
         </Segment>
